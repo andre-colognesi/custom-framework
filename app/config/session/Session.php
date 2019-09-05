@@ -11,7 +11,7 @@ namespace app\config\session{
         }
         #checa se a sessão existe, caso contrário redireciona para o login;
         protected function checkSession(){
-            if(!isset($_SESSION['USERNAME']) || (!isset($_SESSION['ID'])) || (!isset($_SESSION['USER_ID'])) ){
+            if(!isset($_SESSION['USERNAME']) || (!isset($_SESSION['ID'])) || (!isset($_SESSION['USER_ID'])) | ($_SESSION['IP'] != $_SERVER['REMOTE_ADDR']) | ($_SESSION['AGENT'] != $_SERVER['HTTP_USER_AGENT']) ){
                 header("location: http://localhost/meuMVC/login");
             }else{
                 return true;
@@ -27,6 +27,8 @@ namespace app\config\session{
                 $this->addValue('EMAIL',$data['email']);
                 $this->addValue('USER_ID',$data['user_id']);
                 $this->addValue('ID',session_id());
+                $this->addValue('IP',$_SERVER['REMOTE_ADDR']);
+                $this->addValue('AGENT',$_SERVER['HTTP_USER_AGENT']);
                 if($this->checkSession()){
                     if(isset($_COOKIE['REDIRECT_URL'])){
                          header('location: http://localhost'.$_COOKIE['REDIRECT_URL']);

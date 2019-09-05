@@ -62,22 +62,21 @@ namespace app\model{
         public static function login($params){
             $connection = new DB();
             $db = $connection->connect();
-            $query = $db->prepare("SELECT user_id,login, name, email from users where login = :login and password = :password");
+            $query = $db->prepare("SELECT user_id,login, name, email, password from users where login = :login ");
             $query->execute(array(
-                ':login' => $params['login'],
-                ':password' => $params['password']
-            ));
-         
+                ':login' => $params['login'],            ));
             if($query->rowCount() == 1){
                 $res = $query->fetch();
+                if(password_verify($params['password'],$res['password'])){
                 $session = new Session();
                 Session::addMsg('Logado com sucesso!','success');
                 $session->initSession($res);
                 return true;
-                
+                }
             }
-                Session::addMsg('Usuário e/ou senha inválidos','danger');
-                header('location: login');
+            Session::addMsg('Usuario e/ou senha invalidos.','warning');
+            header("location: ".getenv("URL")."/login");
+                
         }
     }
 }

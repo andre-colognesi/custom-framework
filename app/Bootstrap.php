@@ -7,7 +7,7 @@ class Bootstrap
     protected $url;
     protected $indexUrl;
     public function __CONSTRUCT(){
-        putenv("URL=http://localhost/meuMVC");
+        putenv("URL=http://localhost/meuMVC/");
         spl_autoload_register('Autoload::loader');
         date_default_timezone_set("UTC");
 }

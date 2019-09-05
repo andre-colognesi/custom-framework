@@ -26,7 +26,7 @@
           echo '<td>'.$p->product_name.'</td>';
           echo '<td>'.$p->product_price.'</td>';
           ?>
-           <td class=""><a class="btn btn-sm  btn-danger text-light" onclick="document.getElementById('excluir-<?=$p->product_id?>').submit()">Excluir</a>
+           <td class=""><a class="btn btn-sm  btn-danger text-light"  onclick="document.getElementById('excluir-<?=$p->product_id?>').submit()">Excluir</a>
              <a class="btn btn-info btn-sm text-light" href="produto/<?=$p->product_id?>/editar">Editar</a>
            </td>
           <?php

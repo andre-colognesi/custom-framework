@@ -1,6 +1,7 @@
 <?php
 namespace app\controller{
     use \app\model\Users as Users;
+    use \app\config\session\Session as Session;
 class LoginController extends Controller
 {
     
@@ -10,7 +11,7 @@ class LoginController extends Controller
     }
 
     public function login(){
-        $res = Users::login($_POST);    
+        Users::login($_POST);   
     }
 
     public function displayRegister(){
@@ -19,10 +20,6 @@ class LoginController extends Controller
 
     public function register(){
        $res =  Users::createUser($_POST);
-    }
-
-    public function teste(array $id){
-
     }
 
     public function logout(){

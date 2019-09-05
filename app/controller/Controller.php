@@ -3,11 +3,16 @@ namespace app\controller{
     include_once 'app/Bootstrap.php';
     use  \app\config\session\Session as Session;
     class Controller extends Session{
-
         public $auth;
         public $dataUrl = array();
+        public $breadcrumbs = [];
         
+
         public function __CONSTRUCT(){
+            $this->breadcrumbs[] = array(
+                "title"  => "Home",
+                "url"    => "home"   
+            );
             $url = explode("/",$_SERVER['REQUEST_URI']);
             $i = 0;
       
@@ -16,11 +21,11 @@ namespace app\controller{
                 $this->dataUrl[$url[$i-1]] = $value;
                 }
                 $i++;
-
             }
+        }
 
-
-        
+        public function redirect($url){
+            header("location: ".getenv("URL").$url);
         }
 
         public function render($file,$arr = null){
@@ -32,6 +37,14 @@ namespace app\controller{
                 include_once $view;
             }
         }      
+        
+        public  function addBread(string $title = null, string $url = null){
+                $url = getenv("URL").$url;
+                $this->breadcrumbs[] = array(
+                "url" => $url,
+                "title" => $title
+            );
+        }
 
         public function include($file){
             $path = PATH.DS.'app'.DS.'view'.DS.$file.'.php';

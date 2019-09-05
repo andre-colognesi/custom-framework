@@ -1,16 +1,23 @@
 <?php
 namespace app\model{
     include_once 'app/Bootstrap.php';
-    use \app\config\session\Session as Session;
-    use \app\config\database\Database as Database;
+    use \app\config\session\Session     as Session;
+    use \app\config\database\Database   as Database;
     class Model extends Session{
+        CONST CREATED_AT    = "created_at";
+        CONST CREATED_BY    = "created_by";
+        CONST UPDATED_AT    = "updated_at";
+        CONST UPDATED_BY    = "updated_by";
+        CONST REMOVED_AT    = "removed_at";
+        CONST REMOVED_BY    = "removed_by";
+        CONST ACTIVE        = "active";
 
-        protected $config;
+        
+
         public function __CONSTRUCT($id = null){
   
             if($id){
-                $db = new Database();
-                $db = $db->connect();
+                $db = Database::connect();
                 $stmt = $db->prepare("SELECT * FROM " .$this->table. " WHERE ".$this->primaryKey." = :id");
                 $stmt->execute(array(
                     ":id" => $id,
@@ -29,8 +36,7 @@ namespace app\model{
 
 
         protected function config(){
-            $db = new Database();
-            $db = $db->connect();
+            $db = Database::connect();
             $stmt = $db->query('SHOW COLUMNS FROM '.$this->table );
             $list = $stmt->fetchAll();
             return $list;
@@ -39,8 +45,7 @@ namespace app\model{
   
 
     public function insert(array $data){
-        $db = new Database();
-        $db = $db->connect();
+        $db = Database::connect();
         $columns = [];
         $params = [];
         $execute = [];
@@ -72,8 +77,7 @@ namespace app\model{
     }
 
     public function select(array $columns,$tables ,array $where = null){
-        $db = new Database();
-        $db = $db->connect();
+        $db = Database::connect();
         $prepare = [];
         $execute = [];
 
@@ -82,8 +86,7 @@ namespace app\model{
     }
 
     public function selectRaw($query){
-        $db = new Database();
-        $db = $db->connect();
+        $db = Database::connect();
         $select = $db->query($query);
         $res = $select->fetchAll(\PDO::FETCH_CLASS);
         return $res;
@@ -91,8 +94,7 @@ namespace app\model{
     }
 
     public function read($id){
-        $db = new Database();
-        $db = $db->connect();
+        $db = Database::connect();
         $query = "SELECT * FROM ".$this->table." WHERE ".$this->primaryKey." = :id ";
         $select = $db->prepare($query);
         $select->execute(array(
@@ -106,12 +108,14 @@ namespace app\model{
     }
 
     public function softDelete($id){
-    $query = "UPDATE ".$this->table." SET active = 'no', removed_by = ".$_SESSION['USER_ID'].", removed_at = ".date("Y-m-d h:i:s")." WHERE ".$this->primaryKey." = :id";
-    $db = new Database();
-    $db = $db->connect();
+    $query = "UPDATE ".$this->table." SET active = :active, removed_by = :removed_by, removed_at = :removed_at WHERE ".$this->primaryKey." = :".$this->primaryKey."";
+    $db = Database::connect();
     $stmt = $db->prepare($query);
     $stmt->execute(array(
-        ":id" => $id,
+        "active" => "no",
+        "removed_by" => $_SESSION['USER_ID'],
+        "removed_at" => date("Y-m-d h:i:s"),
+        $this->primaryKey => $id
     ));
     if($stmt->rowCount() == 1){
         return true;
@@ -120,8 +124,8 @@ namespace app\model{
     }
 
     public function update($id, array $data){
-        $db = new Database();
-        $db = $db->connect();
+
+        $db = Database::connect();
         $columns = [];
         $params = [];
         $execute = [];
@@ -133,13 +137,12 @@ namespace app\model{
             $values[$k] = $v;
             $i++;
         }
-            $params[] = "updated_by = :updated_by";
-            $params[] = "updated_at = :updated_at";  
-            $values["updated_by"] = $_SESSION['USER_ID'];
-            $values["updated_at"] = date('Y-m-d h:i:s');
+            $params[] = self::UPDATED_BY." = :".self::UPDATED_BY;
+            $params[] = self::UPDATED_AT." = :".self::UPDATED_AT;  
+            $values[self::UPDATED_BY] = $_SESSION['USER_ID'];
+            $values[self::UPDATED_AT] = date('Y-m-d h:i:s');
             $values[$this->primaryKey] = $id;
             $query = "UPDATE ".$this->table." SET ".join(',',$params). " WHERE ".$this->primaryKey ." = :".$this->primaryKey ."";
-            echo $query;
             $insert = $db->prepare($query);
             $insert->execute($values);
             if($insert->rowCount() == 1){
@@ -148,6 +151,27 @@ namespace app\model{
                 return false;
 
     }
+
+    public function child($fatherKey, $childKey, $childTable, $id){
+        $db = Database::connect();
+        $query = "SELECT ".$childTable.".* FROM ".$childTable." INNER JOIN ".$this->table." ON ".$childTable.".".$childKey." = ".$this->table.".".$fatherKey." WHERE ".$this->table.".".$fatherKey." = ".$id." "; 
+        $select = $db->query($query);
+        $res = $select->fetchAll(\PDO::FETCH_CLASS);
+        return $res;
+    }
+
+    public function delete($id){
+        $db = Database::connect();
+        $query = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id";
+        $stmt = $db->prepare($query);
+        $stmt->execute(array(
+            ":id" => $id
+        ));
+        if($stmt->rowCount == 1){
+            return true;
+        }
+        return false;
+    }   
 
     }
 }

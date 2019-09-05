@@ -4,10 +4,11 @@
 
         for(let i = 0; i < links.length; i++){
             links[i].addEventListener("mouseover",()=>{
-                links[i].cursor.style = "pointer";
+                links[i].style.cursor = "pointer";
             })
         }
     })
 </script>
+</main>
 </body>
 </html>

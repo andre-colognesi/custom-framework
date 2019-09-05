@@ -1,11 +1,11 @@
 <?php
 namespace app\web{
 include_once PATH."/app/Bootstrap.php";
-
 class Rota
 {
-    protected $_rotas = array();
-    protected $_parameters = array();
+    private $_rotas = array();
+    private $_urlParameters = array();
+
     public function addRota($method, $url, $controller){
         $this->_rotas[] = [
             'method'=>$method,
@@ -19,7 +19,6 @@ class Rota
     }
     public function execRota($url){
         $url = $this->validUrl($url);
-
         foreach($this->_rotas as $index)
         {
             if($index['url'] == $url){
@@ -29,22 +28,34 @@ class Rota
                     $controller = "app\\controller\\".$controllers[0];
                     $controller = new $controller;
                     $function = $controllers[1];
-                    $controller->$function($this->_parameters);
-                    $this->_parameters = array();
+                    $controller->$function($this->getParam());
+                    $this->clearParam();
                 }else{
                     echo 'Método invalido';
                 }
-            }
+            }       
+
         }
     }
+    private function getParam(){
+        return $this->_urlParameters;
+    }
 
-    protected function validUrl($url){
+    private function setParam($position,$param){
+        $this->_urlParameters[$position] = (int) $param;
+    }
+
+    private function clearParam(){
+        $this->_urlParameters = array();
+    }
+
+    private function validUrl($url){
             $i = 0;
             $j = 0;
             $url = explode("/",$url);
             foreach($url as $k => $v){
                 if(preg_match("/[0-9]/",$v)){
-                    $this->_parameters[$j] = (int)$v;
+                    $this->setParam($j,$v);
                     $url[$i] = "{id}";   
                     $j++;
                 }

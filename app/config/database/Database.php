@@ -8,7 +8,7 @@ namespace app\config\database{
         protected $password;
 
 
-        public function connect(){
+        private function _connect(){
             try{
                  $this->host     = 'localhost:3306';
                  $this->db       = 'DB_TESTE';
@@ -20,6 +20,11 @@ namespace app\config\database{
             }catch(Exception $e){
                 echo 'Ocorreu um erro de conexão: '.$e->getMessage();
             }
+        }
+
+        public static function connect(){
+            $db = new self;
+            return $db->_connect();
         }
     }
 

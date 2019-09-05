@@ -1,4 +1,4 @@
-<?php $this->include('header') ?>
+<?= $this->include('header') ?>
 
   <div class="container">
    <form class="form-group" action="teste" method="post">
@@ -7,4 +7,5 @@
     <h1>Home</h1>
     </div>
    </div>
-    <?php  $this->include('footer'); ?>
+
+    <?= $this->include('footer'); ?>

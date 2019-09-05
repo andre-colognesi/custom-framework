@@ -19,6 +19,17 @@
                 <label>Preço</label>
                 <input type="text" class="form-control" name="price">
             </div>
+            <div class="col-sm-3">
+                <label>Vendedor</label>
+                <select class="form-control" name="salesman_id">
+                    <?php
+                            echo '<option value="">Selecione</option>';
+                        foreach($salesmans as $sales){
+                            echo '<option value="'.$sales->salesman_id.'">'.$sales->salesman_name.'</option>';
+                        }
+                    ?>
+                </select>
+            </div>
         </div>
         <div class="row">
             <div class="col-sm-3">
