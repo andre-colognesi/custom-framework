@@ -6,14 +6,13 @@
     <h1>Criar Vendedor</h1>
     <hr>
     <br><br>
-  
     </div>
    </div>
     <form action="salvar-vendedor" method="POST">
         <div class="row">
             <div class="col-sm-4">
+            <label>Nome</label>
                 <input type="text" class="form-control" name="name">
-                <label>Nome</label>
 
             </div>
             <div class="col-sm-4">

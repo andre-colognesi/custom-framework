@@ -29,6 +29,8 @@ namespace app\config\session{
                 $this->addValue('ID',session_id());
                 $this->addValue('IP',$_SERVER['REMOTE_ADDR']);
                 $this->addValue('AGENT',$_SERVER['HTTP_USER_AGENT']);
+                $this->addValue('REQUEST_TOKEN',bin2hex(random_bytes(64)));
+                $this->addValue('AVATAR',$data['avatar']);
                 if($this->checkSession()){
                     if(isset($_COOKIE['REDIRECT_URL'])){
                          header('location: http://localhost'.$_COOKIE['REDIRECT_URL']);

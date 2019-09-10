@@ -2,6 +2,7 @@
 namespace app\controller{
     use \app\model\Salesman as Salesman;
     use \app\config\session\Session as Session;
+    use \app\web\Request as Request;
     class SalesmanController extends Controller
 {
     public function __CONSTRUCT(){
@@ -27,7 +28,7 @@ namespace app\controller{
 
     public function save(){
         $salesman = new Salesman;
-        if($salesman->save($_REQUEST)){
+        if($salesman->save(new Request($_POST))){
             Session::addMsg('Vendedor inserido com sucesso.','success');
             $this->redirect("vendedores");
         }else{
@@ -52,8 +53,8 @@ namespace app\controller{
     public function read($id){
         $id = $id[0];
         $this->addBread("Editar Vendedor ".$id,"vendedor/".$id."/editar") ;
-        $salesman = new Salesman();
-        $sales = $salesman->read($id);
+        $salesman = new Salesman($id);
+        $sales = $salesman->getConfig();
         $this->render('salesmans/updateSalesman',compact('sales'));
     }
 

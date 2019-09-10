@@ -1,6 +1,5 @@
 <?php $this->include('header') ?>
 
-  <div class="container">
    <div class="row">
     <div class="col-sm-12">
     <h1>Criar Produto</h1>
@@ -9,7 +8,8 @@
   
     </div>
    </div>
-    <form action="salvar-produto" method="POST">
+    <form action="salvar-produto" method="POST" enctype="multipart/form-data">
+    <?= $this->getToken()?>
         <div class="row">
             <div class="col-sm-4">
                 <label>Nome</label>
@@ -18,6 +18,10 @@
             <div class="col-sm-4">
                 <label>Preço</label>
                 <input type="text" class="form-control" name="price">
+            </div>
+            <div class="col-sm-3">
+                <label>Foto</label>
+                <input type="file" name="avatar">
             </div>
             <div class="col-sm-3">
                 <label>Vendedor</label>
@@ -39,5 +43,4 @@
         </div>
     </form>
 
-   </div>
     <?php  $this->include('footer'); ?>

@@ -2,25 +2,35 @@
 namespace app\model{
     
     use \app\config\database\Database as DB;
+    use \app\web\Request as Request;
     class Product extends Model{
         protected $primaryKey = 'product_id';
         protected $table = 'products';
         CONST UPDATED_AT = 'TESTE';
         
         public function allProducts(){            
-            $query = "SELECT * FROM products WHERE active = 'yes'" ;
-            $res =  $this->selectRaw($query);
+            $res = $this->select(['*'],'products')->where('active','=',"'yes'")->paginate(3);
             return $res;
         }
 
-        public function save(array $request){
-            if($request['salesman_id'] == ''){
-                $request['salesman_id'] = null;
+        public function searchProducts(Request $request){
+            $res = $this->select(['*'],'products')->where('active','=',"'yes'");
+            if(isset($request->id) && $request->id != ""){
+                $res = $res->andWhere('product_id','=',$request->id);
             }
+            if(isset($request->name) && $request->name != ""){
+                $res = $res->andWhere('product_name','=',"'".$request->name."'");
+            }
+            $res = $res->paginate(1);
+
+            return $res;
+        }
+
+        public function save(Request $request){
             $data = array(
-                "product_name" => $request["name"],
-                "product_price" => $request["price"],
-                "salesman_id"   => $request["salesman_id"]
+                "product_name" => $request->name,
+                "product_price" => $request->price,
+                "salesman_id"   => $request->salesman_id
             );
             if($this->insert($data)){
                 return true;
@@ -28,7 +38,7 @@ namespace app\model{
             return false;
         }
 
-        public function delete($id){
+        public function delete($id,Request $resquest){
             $res = $this->softDelete($id);
             if($res){
                 return true;
@@ -52,5 +62,7 @@ namespace app\model{
             }
                 return false;
         }
+
+
     }
 }

@@ -1,6 +1,5 @@
 <?php $this->include('header') ?>
 
-  <div class="container">
    <div class="row">
     <div class="col-sm-12">
     <h1>Editar Vendedor <?=$sales['salesman_name']?></h1>
@@ -32,5 +31,4 @@
             </div>
         </div>
 
-   </div>
-    <?php  $this->include('footer'); ?>
+x    <?php  $this->include('footer'); ?>
