@@ -6,13 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Meu MVC</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" id="teste" href="<?=getenv("URL")?>app/forniture/css/app.css">
+    <link rel="stylesheet" href="<?=getenv("URL")?>app/forniture/css/css.css">
+    <!--<link rel="stylesheet" id="teste" href="<?=getenv("URL")?>app/forniture/css/app.css"> -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
   <a class="navbar-brand" href="#">Navbar</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -21,27 +22,31 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item ">
-        <a class="nav-link" href="<?=getenv("URL")?>/home">Home </a>
+        <a class="nav-link" href="<?=getenv("URL")?>home">Home </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?=getenv("URL")?>/produtos">Produtos </a>
+        <a class="nav-link" href="<?=getenv("URL")?>produtos">Produtos </a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="<?=getenv("URL")?>/vendedores">Vendedores </a>
+        <a class="nav-link" href="<?=getenv("URL")?>vendedores">Vendedores </a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0 nav-item dropdown">
+        <?php if(isset($_SESSION['AVATAR'])){?>
+        <a class="nav-item" ><img class="img rounded img-fluid"  src="<?= getenv("URL") . 'app/upload/images/avatar/'.$_SESSION["USER_ID"]."/".$_SESSION["AVATAR"]?>" width="50px" style="max-height: 50px;"></a>
+        <?php }?>
         <a class="btn btn-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <?= $_SESSION['USERNAME']?>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="http://localhost/meuMVC/logout">Logout</a>
+          <a class="dropdown-item" href="<?= getenv("URL")?>configuracao">Alterar Dados</a>
+          <a class="dropdown-item" href="<?= getenv("URL")?>logout">Logout</a>
         </div>
     </form>
   </div>
     </nav>
-    <nav aria-label="breadcrumb" class="mb-5 mx-5">
+    <nav aria-label="breadcrumb" class="mb-1  mx-3">
     <ol class="breadcrumb">
   
       <?php 
@@ -64,7 +69,7 @@
   
     <?php }else{ ?>
 </nav>
-<nav aria-label="breadcrumb" class="mb-5 mx-5">
+<nav aria-label="breadcrumb" class="mb-1 mx-3">
     <ol class="breadcrumb">
     <li class="breadcrumb-item active" ><a href="login">Login</a></li>
     <li class="breadcrumb-item active" ><a href="cadastrar-login">Cadastrar</a></li>
@@ -87,4 +92,4 @@ if(isset($_SESSION['MESSAGE'])){
 
 ?>    
 
-<main class="mx-5 rounded py-5">
+<main class="mx-3 rounded py-3 px-3 main">

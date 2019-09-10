@@ -24,6 +24,11 @@ namespace app\controller{
             }
         }
 
+        public function getToken(){
+            $token = "<input type=\"hidden\" name=\"request_token\" value=\"".$_SESSION['REQUEST_TOKEN']."\" />";
+            echo $token;
+        }
+
         public function redirect($url){
             header("location: ".getenv("URL").$url);
         }
@@ -52,5 +57,54 @@ namespace app\controller{
                 include_once $path;
             }
         }
+
+        public function paginate($array){
+            $pages = $array[0]->pages;
+            if(!empty($pages) && $pages > 0){
+                $url = explode("?",getenv("FULLURL"));
+                $page = 1;
+                $prev;
+                $next;
+                if(isset($_GET['page']) && !empty($_GET['page'])){
+                    $page   = filter_var($_GET['page'],FILTER_VALIDATE_INT);
+                    $page   = filter_var($page,FILTER_VALIDATE_INT);
+                }
+                if(empty($page) || $page == ""){
+                    $page = 1;
+                }
+                if($page > $pages){
+                    $page = $pages;
+                }
+                $page == 1 ? $disabledPrev = "disabled" : $disabledPrev = '';
+                $page == $pages ? $disabledNext = "disabled" : $disabledNext = '';
+                $pagination = 
+                '<nav aria-label="Page navigation">
+                <ul class="pagination">
+                  <li class="page-item '.$disabledPrev.'">
+                    <a class="page-link" href="'.$url[0].'?page='.($page-1) .'" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                      <span class="sr-only">Voltar</span>
+                    </a>
+                  </li>
+                  ';
+                  $active = '';
+                  for($i = 1; $i <= $pages; $i++){
+                      $i == $page ? $active = " active" : $active = '';
+                      $pagination = $pagination . '<li class="page-item '.$active.'"><a class="page-link" href="'.$url[0].'?page='.$i.'">'.$i.'</a></li>';
+                  };
+                 $pagination = $pagination . '
+                  <li class="page-item '.$disabledNext.'">
+                    <a class="page-link" href="'.$url[0].'?page='.($page + 1).'" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                      <span class="sr-only">Proximo</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>'; 
+
+              echo $pagination;
+            }
+        }
     }
+
 }

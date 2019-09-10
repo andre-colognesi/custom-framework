@@ -1,6 +1,5 @@
 <?php $this->include('header') ?>
 
-  <div class="container">
    <div class="row">
     <div class="col-sm-12">
     <h1>Editar Vendedor <?=$sales['salesman_name']?></h1>
@@ -9,6 +8,7 @@
 
     </div>
    </div>
+
     <form action="<?=getenv("URL") ?>vendedor/<?= $sales['salesman_id']?>/update" method="POST">
         <div class="row">
             <div class="col-sm-4">
@@ -28,5 +28,4 @@
         </div>
     </form>
 
-   </div>
     <?php  $this->include('footer'); ?>

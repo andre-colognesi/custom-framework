@@ -5,11 +5,10 @@ class Rota
 {
     private $_rotas = array();
     private $_urlParameters = array();
-
     public function addRota($method, $url, $controller){
         $this->_rotas[] = [
             'method'=>$method,
-            'url'=>$url,
+            'url'=>"/meuMVC/".$url,
             'controller'=>$controller
         ];
     } 

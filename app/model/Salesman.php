@@ -2,6 +2,7 @@
 namespace app\model{
     
     use \app\config\database\Database as DB;
+    use \app\web\Request as Request;
     class Salesman extends Model{
         protected $primaryKey = 'salesman_id';
         protected $table = 'salesmans';
@@ -17,7 +18,8 @@ namespace app\model{
             return $child;
         }
 
-        public function save(array $request){
+        public function save(Request $request){
+            $request->show();
             $data = array(
                 "salesman_name" => $request["name"],
                 "birthday" => $request["birthday"],

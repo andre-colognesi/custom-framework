@@ -4,6 +4,7 @@ namespace app\model{
     
     use \app\config\database\Database as DB;
     use \app\config\session\Session as Session;
+    use \app\web\Request as Request;
     class Users extends Model{
         protected $primaryKey = 'user_id';
         protected $table = 'users';
@@ -56,13 +57,28 @@ namespace app\model{
             }
                 $session = new Session();
                 $session->initSession($insert);;
+
+        }
+
+        public function updateSettings($id, Request $request, $fileName){
+            $data = array(
+                "name"  => $request->name,
+                "email" => $request->email,
+                "avatar" => $fileName
+            );
+            if(!$this->update($id,$data)){
+                return false;
+            }
+            $_SESSION['AVATAR'] = $fileName;
+            return true;
             
+
         }
 
         public static function login($params){
             $connection = new DB();
             $db = $connection->connect();
-            $query = $db->prepare("SELECT user_id,login, name, email, password from users where login = :login ");
+            $query = $db->prepare("SELECT user_id,login, name, email, avatar, password from users where login = :login ");
             $query->execute(array(
                 ':login' => $params['login'],            ));
             if($query->rowCount() == 1){

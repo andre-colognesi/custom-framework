@@ -7,6 +7,14 @@ class Bootstrap
     protected $url;
     protected $indexUrl;
     public function __CONSTRUCT(){
+    if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') 
+        $link = "https"; 
+    else
+        $link = "http"; 
+        $link .= "://"; 
+        $link .= $_SERVER['HTTP_HOST']; 
+        $link .= $_SERVER['REQUEST_URI']; 
+        putenv("FULLURL=".$link);
         putenv("URL=http://localhost/meuMVC/");
         spl_autoload_register('Autoload::loader');
         date_default_timezone_set("UTC");
@@ -19,7 +27,8 @@ class Bootstrap
     }
 
     public function setUrl($url){
-        $this->url = $url;
+        $url = explode("?",$url);
+        $this->url = $url[0];
     }
 
     public function getUrl(){

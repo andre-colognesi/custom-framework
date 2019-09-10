@@ -2,12 +2,12 @@
 define('PATH',dirname(__FILE__));
 define('DS',DIRECTORY_SEPARATOR);
 include_once 'app/Bootstrap.php';
-$url = explode("=",$_SERVER['QUERY_STRING']);
-$url = $url[1];
-$sanitzer = new app\web\Request;
-$sanitzer->sanitazeUrl($url);
+
+$url = $_SERVER['REQUEST_URI'];
+$sanitzer = new app\web\Request();
+$sanitzer->setUrl($url);
 $rota = new app\web\Rota;
-$rota->addRota('GET','','HomeController@home');
+$rota->addRota('GET','/meuMVC/home','HomeController@home');
 $rota->addRota('GET','pessoa','PessoaController@read');
 $rota->addRota('GET','home','HomeController@home');
 $rota->addRota('GET','login','LoginController@displayLogin');
@@ -29,4 +29,8 @@ $rota->addRota('GET','vendedor/{id}/editar','SalesmanController@read');
 $rota->addRota('GET','vendedor/{id}/visualizar','SalesmanController@view');
 $rota->addRota('POST','vendedor/{id}/update','SalesmanController@update');
 $rota->addRota('POST','vendedor/{id}/excluir','SalesmanController@delete');
+$rota->addRota('GET','configuracao','UserController@userConfig');
+$rota->addRota('POST','atualizar-usuario','UserController@updateUser');
+$rota->addRota('GET','buscar-produtos','ProductController@search');
+
 $rota->execRota($sanitzer->getUrl());
