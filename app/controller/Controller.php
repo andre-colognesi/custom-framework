@@ -58,6 +58,19 @@ namespace app\controller{
             }
         }
 
+        public function responseJson(array $array, $status = 200){
+            header('Content-Type: application/json');
+            if(!\is_array($array)){
+                $type = gettype($array);
+                http_response_code(500);
+                throw new \Exception("Error! array expected, {$type} given", 1);
+            }
+            $json = \json_encode($array);
+                http_response_code($status);
+                echo $json;
+
+        }
+
         public function paginate($array){
             $pages = $array[0]->pages;
             if(!empty($pages) && $pages > 0){

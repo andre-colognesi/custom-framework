@@ -9,7 +9,11 @@ namespace app\model{
         CONST UPDATED_AT = 'TESTE';
         
         public function allProducts(){            
-            $res = $this->select(['*'],'products')->where('active','=',"'yes'")->paginate(3);
+
+            $res = DB::init()
+            ->select(['p.*, s.salesman_name'],'products as p left join salesmans as s on p.salesman_id = s.salesman_id')
+            ->where('p.active','=',"'yes'")
+            ->paginate(5);
             return $res;
         }
 

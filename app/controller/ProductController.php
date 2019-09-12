@@ -20,6 +20,14 @@ namespace app\controller{
         $produto = $product->allProducts();
         $this->render('allProducts',compact('produto'));
 
+
+    }
+
+    public function csv(){
+        $product = new Product;
+        $produto = $product->allProducts();
+        $a =  join(',',$produto);
+        var_dump($a);
     }
 
     public function search(){
