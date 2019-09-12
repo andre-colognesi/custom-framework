@@ -2,7 +2,6 @@
 define('PATH',dirname(__FILE__));
 define('DS',DIRECTORY_SEPARATOR);
 include_once 'app/Bootstrap.php';
-
 $url = $_SERVER['REQUEST_URI'];
 $sanitzer = new app\web\Request();
 $sanitzer->setUrl($url);
@@ -32,5 +31,6 @@ $rota->addRota('POST','vendedor/{id}/excluir','SalesmanController@delete');
 $rota->addRota('GET','configuracao','UserController@userConfig');
 $rota->addRota('POST','atualizar-usuario','UserController@updateUser');
 $rota->addRota('GET','buscar-produtos','ProductController@search');
+$rota->addRota('GET','produtos-csv','ProductController@csv');
 
 $rota->execRota($sanitzer->getUrl());

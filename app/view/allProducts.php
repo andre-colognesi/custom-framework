@@ -36,6 +36,7 @@
           <th>ID.</th>
           <th>Produto</th>
           <th>Preço</th>
+          <th>Vendedor</th>
           <th></th>
       </tr>
       
@@ -54,6 +55,7 @@
           echo '<td>'.$p->product_id.'</td>';
           echo '<td>'.$p->product_name.'</td>';
           echo '<td>'.$p->product_price.'</td>';
+          echo '<td>'.$p->salesman_name.'</td>'
           ?>
            <td class=""><a class="btn btn-danger text-light"  onclick="document.getElementById('excluir-<?=$p->product_id?>').submit()">Excluir</a>
              <a class="btn btn-info text-light" href="produto/<?=$p->product_id?>/editar">Editar</a>
