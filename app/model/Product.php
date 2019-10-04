@@ -18,7 +18,8 @@ namespace app\model{
         }
 
         public function searchProducts(Request $request){
-            $res = $this->select(['*'],'products')->where('active','=',"'yes'");
+            $res = DB::init();
+            $res = $res->select(['*'],'products')->where('active','=',"'yes'");
             if(isset($request->id) && $request->id != ""){
                 $res = $res->andWhere('product_id','=',$request->id);
             }

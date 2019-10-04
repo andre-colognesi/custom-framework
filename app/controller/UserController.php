@@ -26,11 +26,13 @@ namespace app\controller{
         if($_FILES['avatar']['tmp_name'] != "" && !empty($_FILES['avatar']['tmp_name'])){
         $file = new File($_FILES['avatar']);
         $oldFile = $_SESSION['AVATAR'];
+      
         $file->setPath('images/avatar/'.$_SESSION['USER_ID']);
         $file->setName(bin2hex(random_bytes(64)).'-'.$_SESSION['USER_ID']);
         if($file->save()){
+
             $file->deleteFile($file->getPath().'/'.$oldFile);
-        }
+    }
             $avatar = $file->getName().'.'.$file->getExtension();
         }else{
             $avatar = $_SESSION['AVATAR'];

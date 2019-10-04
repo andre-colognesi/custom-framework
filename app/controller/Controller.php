@@ -1,6 +1,5 @@
 <?php
 namespace app\controller{
-    include_once 'app/Bootstrap.php';
     use  \app\config\session\Session as Session;
     class Controller extends Session{
         public $auth;
