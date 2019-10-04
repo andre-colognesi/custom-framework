@@ -11,7 +11,9 @@ class LoginController extends Controller
     }
 
     public function login(){
-        Users::login($_POST);   
+        if(!Users::login($_POST)){
+            header("location: ".getenv("URL")."login");
+        }   
     }
 
     public function displayRegister(){

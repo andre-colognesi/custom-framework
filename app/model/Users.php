@@ -76,8 +76,8 @@ namespace app\model{
         }
 
         public static function login($params){
-            $connection = new DB();
-            $db = $connection->connect();
+            $db = DB::connect();
+        //   $db = $connection->connect();
             $query = $db->prepare("SELECT user_id,login, name, email, avatar, password from users where login = :login ");
             $query->execute(array(
                 ':login' => $params['login'],            ));
@@ -91,8 +91,7 @@ namespace app\model{
                 }
             }
             Session::addMsg('Usuario e/ou senha invalidos.','warning');
-            header("location: ".getenv("URL")."/login");
-                
+            return false;                
         }
     }
 }
